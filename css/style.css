@@ -1,0 +1,42 @@
+﻿body {
+	font-family:Verdana, Geneva, Tahoma, sans-serif;
+	height:100%;
+	width:100%;
+	border:0px red solid;
+	margin:20px;
+}
+h1 {
+	margin:10px;
+}
+div {
+	margin:10px;
+}
+table {
+	border:0 #fff solid;
+	border-spacing: 0;
+}
+td {
+	text-align:center;
+	border:0px #000 solid;
+	width:10%;
+	height:10%;
+}
+.pattern_A {
+	background-color:#FFCE9E;
+}
+.pattern_B {
+	background-color:#D18B47;
+}
+.addborder {
+	filter:brightness(110%);
+	-webkit-filter:brightness(110%);
+	-moz-filter:brightness(110%);
+	-o-filter:brightness(110%);
+	-ms-filter:brightness(110%);
+}
+.redbkcolor{
+	background-color:#ff0000;
+}
+.greenbkcolor{
+	background-color:#00ff00;
+}

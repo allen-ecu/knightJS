@@ -1,0 +1,277 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<link rel="icon" href="favicon.ico">
+<meta charset="utf-8">
+<meta name="Robots" content="index, follow">
+<meta name="Keywords" content="The Knight's Travails documentation"/>
+<meta name="Description" content="The Knight's Travails C# JS PHP ASP.NET MVP"/>
+<meta name="Viewport" content="width=device-width,initial-scale=1.0">
+<meta name="Author" content="WeiqingMAO" />
+<meta name="Devloper" content="WEIQING MAO +61 4 3238 8818 PERTH WESTERN AUSTRALIA" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta property="og:title" content="The Knight's Travails" />
+<meta property="og:type" content="SOFTWARE.NET.PHP.JS.HTML.DOCUMENT" />
+<meta property="og:url" content="http://robertnicholson.org/knight" />
+<meta property="og:image" content="http://robertnicholson.org/favicon.png" />
+<meta property="og:description " content="The Knight's Travails documentation" />
+<meta property="og:locale" content="en_AU" />
+<meta property="og:site_name" content="The Knight's Travails" />
+
+<title>The Knight's Travails Solutions</title>
+<link href="css/pure-min.css" rel="stylesheet">
+<!--[if lte IE 8]>
+<link href="css/layouts/side-menu-old-ie.css" rel="stylesheet">
+<![endif]-->
+<!--[if gt IE 8]>
+<!-->
+<link href="css/layouts/side-menu.css" rel="stylesheet">
+<!--<![endif]-->
+<link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div id="layout">
+	<!-- Menu toggle --><a id="menuLink" class="menu-link" href="#menu">
+	<!-- Hamburger icon --><span></span></a>
+	<div id="menu">
+		<div class="pure-menu pure-menu-open">
+			<a class="pure-menu-heading" href="#">CODE</a>
+			<ul>
+				<li id="puz" class="menu-item-divided" onclick="makeSelected(this.id)"><a href="#puzzle">Puzzle</a></li>
+				<li id="sol" class="menu-item-divided" onclick="makeSelected(this.id)"><a href="#solutions">Solutions</a></li>
+				<li id="con" class="menu-item-divided" onclick="makeSelected(this.id)"><a href="#conclusion">Conclusion</a></li>
+				<li id="ref" class="menu-item-divided" onclick="makeSelected(this.id)"><a href="#reference">Reference</a></li>
+				<li id="aut" class="menu-item-divided" onclick="makeSelected(this.id)"><a href="#author">Author</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div>
+	    <div class="header">
+			<h1>The Knight's Travails</h1>
+			<h2 id="puzzle">Puzzle</h2>
+		</div>
+		<div class="content">
+		
+			<h2 class="content-subhead">The Knight's Travails</h2>
+			<p>Given a standard 8x8 chessboard, design an application that accepts two squares identified by algebraic chess notation. The first square is the starting position, and the second square is the ending position. Find the shortest sequence of valid moves to take a Knight piece from the starting position to the ending position. Each move must be a legal move by a Knight. For any two squares there may be more than one valid solution.</p>
+			
+			<h2 class="content-subhead">Input</h2>
+			<p>Must be two squares identified in algebraic chess notation representing the starting and ending positions of the Knight. The two squares are separated by a space.</p>
+
+			<h2 class="content-subhead">Output</h2>
+			<p>Must be a list of squares through which the Knight passes, in algebraic chess notation. This must include the ending position, but exclude the starting position.</p>
+		
+			<h2 class="content-subhead">Example</h2>
+			<p>Example Input: A8 B7</p>
+			<p>Example Output: C7 B5 D6 B7</p>
+			<p>Note: For any two squares there may be more than one valid solution, your program need not print this exact solution if it can find another that is equally short.</p>
+			
+			<h2 class="content-subhead">Summary</h2>
+			<ul>
+				<img class="chessbd" src="img/chess_l.png" alt="chessboard"><img class="chessbd" src="img/chess_r.png" alt="chessboard">
+				<li>A standard 8x8 chessboard where each position is indicated in algebraic notation as showed above left</li>
+				<li>A knight’s legal movement is move to a square that is two squares horizontally and one square vertically, or two squares vertically and one square horizontally as showed above right</li>
+				<li>Input: two squares identified in algebraic chess representing the starting and ending positions of the Knight. The two squares are separated by a space. e.g. A8 B7</li>
+				<li>Output: a list of squares through which the Knight passes excluding starting position including ending position. e.g. C7 B5 D6 B7 or B6 C4 A5 B7, named path</li>
+				<li>The output is the shortest path from the starting position to the ending position. There may be more than one path.</li>
+				<li>This object-oriented application (C#) will print one valid correct path as one solution for any given valid input on the windows console but not all the valid paths.</li>
+				<li>There are no other pieces on the board as obstacles</li>
+			</ul>
+
+		</div>
+	</div>
+	
+	<div>
+	
+		<div class="header">
+			<h2 id="solutions">Solutions</h2>
+		</div>
+		<div class="content">
+		
+			<h2 class="content-subhead">Solution One - C# Windows Console(Desktop)</h2>
+			<h3>Overview</h3>
+			<p>The C# Console application is made of three parts</p>
+			<p>The first part is to obtain user’s input of starting position and ending position, and define some parameters such as the chessboard layout, the Knight’s legal movements, and some lists to hold data.</p>
+			<p>The second part is to use the Flood Fill method to fill the chessboard with values of minimum of steps from starting position to the rest, and save the information of parent nodes and child nodes. From the table below we can tell two important messages that are, one is the minimum steps needed for a Knight moves from A8 to B7 is 4, another is a Knight takes 1 step from A8 to either C7 or B6 meaning the parent node is A8 and the child nodes are C7 and B6. In this case, A8 is the root, B6 is the child of A8, and B6 is the parent of its sub nodes. C7 can have more than one or no child nodes.</p>
+			<img class="floodfill" src="img/floodfill1.png" alt="floodfill1">
+            <img class="floodfill" src="img/floodfill2.png" alt="floodfill2">
+			<p>The third part is to generate the path from the starting position to the ending position for a given starting position, minimum steps needed and the information of parent and child nodes as gained from the previous step. Besides, I wrote some unit test cases for verifying the results.</p>
+			<h3>What is the Floodfill Algorithm?</h3>
+			<ol>
+			<li>initialize the chessboard with the value of -1 of all positions, set step = 0, set the staring position be 0, e.g. A8 = 0</li>
+			<li>iterate the 8x8 chessboard from left to right top to bottom, eg. A8,B8....H8, A7,B7....H7,.....,..A1,B1...H1.</li>
+			<li>given the ending position B7, during iteration process if the position of [row][column] is a  legal movement of the Knight, and the value of that position[row][column]  is -1, we increase the step value to 1, and mark this position to step(which is 1 now). after this loop, we will find, e.g. B6 = 1, and C7 =1</li>
+			<li>then continue the loop of new step value (1 now) to find child nodes of B6 and C7 and mark the values of those nodes to be a new step value(which is 2 now)</li>
+			<li>during the iteration process we can draw the diagram of minimum steps needed from the starting position to the ending position, as you can see on "s.png' image in the attachment.</li>
+			<li>druing this process we also record the parent node and child nodes information into a List(C#) or a Array(PHP), e.g. {  {A8,B6,C7}, {B6,xxx}, {C7,xxx}.....{....}  }  A8 is the parent node, and its child nodes are B6 and C7.B6 is the parent node and its child nodes are xxx. same relationship to the rest.</li>
+			<li>from step 3, we know from A8 to B7 takes at least 4 steps. From step 6, given ending position B7, I can find the parent node A5. Given ending position A5, I can find the parent node C4. Given ending position C4, I can find the parent node B6. Yes, all the way up to the starting position recording all the nodes visited. Therefore, I have obtained B6 C4 A5 B7.</li>
+			</ol>
+			<p>This solution is implemented on the client side only, meaning no internet is required.</p>
+			<h3>Screenshot</h3>
+			<img class="vs" src="img/vs.png" alt="vs-screenshot">
+			<h3>Code</h3>
+			<p><a href="http://robertnicholson.org/knight.zip">Download</a></p>
+			<ol>
+			<li>Open Visual Studio 2012, and File-New-Project-Console Application, change "Name" to : “BreadthFirstSearchSolution”, and click on "OK"</li>
+			<li>Add "Program.cs" “ChessBoard.cs” “Nodes.cs” “Parent.cs” “Utility.cs” and “UnitTest.cs” files to your project folder(e.g. My Documents\Visual Studio 2012\Projects\BreadthFirstSearchSolution</li>
+			<li>Open "BreadthFirstSearchSolution", press F5 to run</li>
+			</ol>
+			<p>Note: It has been tested successfully in Visual Studio 2012 Pro on Windows 7 Home Premium x64</p>
+			
+			<h2 class="content-subhead">Solution Two - ASP.NET MVP Webpage(Client/Server)</h2>
+			<h3>Overview</h3>
+			<p>The second solution is a ASP.NET MVP application, that wil draw a chessboard on the webpage(HTML JS), and C#. Basically, JavaScript in HTML will send the parameter 'start=A8&end='B7' to the ASP.NET server via AJAX call, and  C# at the back handling the POST and send the result back to  JavaScript via AJAX, the KnockOut is used to bind and update the steps number on the chessboard. When the user firstly clicks on any square, he marks the starting position showed as a green square. When the user secondly clicks on any square, he marks the ending position showed as a red square. Everytime, a new pair of positions will erase the old step numbers showed on the chessboard. This is a more intuitive solution by provding interactive user interface.</p>
+			<h3>Screenshot</h3>
+			<img class="vs" src="img/vs2.png" alt="screenshot">
+			<h3>Code</h3>
+			<p><a href="http://robertnicholson.org/knight(ASPMVC).zip">Download</a></p>
+			<p>Please unzip the file, and open the project solution by Visual Studio 2012 for Web.</p>
+			<p>Note: It has been tested successfully in Visual Studio 2012 Pro on Windows 7 Home Premium x64</p>
+			<p>This solution is implemented on both the client browser(C#) and the server(ASP.NET)</p>
+			<h2 class="content-subhead">Solution Three - HTML JS PHP Single Web Page(Client/Server)</h2>
+			<h3>Overview</h3>
+			<p>The third solution is using HTML, JS as front end, and PHP as back end on the Apache server. Because I want to upload this solution (a single page webpage) to my Apache server, so I implemented the same algorithm in PHP for handling the Ajax call from the JS.</p>
+			<h3>Screenshot</h3>
+			<img class="vs" src="img/vs3.png" alt="screenshot">
+			<h3>Code</h3>
+			<p><a href="http://robertnicholson.org/knight(PHP).zip">Download</a></p>
+			<p><a href="http://robertnicholson.org/knight">Demo</a></p>
+			<p>Please unzip the file, and copy to htdocs folder of your apache server.</p>
+			<p>Note: It has been tested successfully in Apache 2.4.9 PHP 5.5.11 on Windows 7 Home Premium x64</p>	
+			<p>This solution is implemented on both the client browser(JS) and the server(PHP)</p>
+		
+			<h2 class="content-subhead">Solution Four - HTML JS CSS Single Web Page(Client)</h2>
+			<h3>Overview</h3>
+			<p>Finally, it comes to the most excited part.The four solution is using HTML, JS, and CSS only. As you can tell, the nature of this application does not require server to be involved as a matter of fact. Therefore, I implemented all the functionalities in JavaScript. I also enable the APPCACHE therefore the user still can use this app even the Internet is offline after his first visit.</p>
+			<h3>Code</h3>
+			<p><a href="http://robertnicholson.org/knight(JS).zip">Download</a></p>
+			<p><a href="http://robertnicholson.org/knightjs">Demo</a></p>
+			<p>Please unzip the file, and copy to htdocs folder of your apache server.</p>
+			<p>Note: It has been tested successfully on Google Chrome v38, Mozilla Firefox v31, and Internet Explorer v11</p>	
+			<p>This solution is implemented on the client browser(JS) only. No internet is required after first visit.</p>
+
+		
+		
+		</div>
+	</div>
+
+	<div>
+		<div class="header">
+			<h2 id="conclusion">Conclusion</h2>
+		</div>
+		<div class="content">
+			<p>As you might be aware of that there are many different technologies in web developement. However, the fundamental algorithm or concept is the same. No matter what technologies you use for implementation, ASP.NET MVC + JS, PHP + JS, C#, or even just JS. As far as you love coding, the rest is just a matter of time. So, what's next? Try Ruby on Rail!</p>				
+		</div>
+	</div>
+	
+	<div>
+	    <div class="header">
+			<h2 id="reference">Reference</h2>
+		</div>
+		<div class="content">
+			<p><a href="http://knight-path.sourceforge.net/puzzle.html">http://knight-path.sourceforge.net/puzzle.html</a></p>
+            <p><a href="http://en.wikipedia.org/wiki/Chessboard">http://en.wikipedia.org/wiki/Chessboard</a></p>
+            <p><a href="http://en.wikipedia.org/wiki/Knight_%28chess%29">http://en.wikipedia.org/wiki/Knight_%28chess%29</a></p>
+            <p><a href="http://en.wikipedia.org/wiki/Breadth-first_search">http://en.wikipedia.org/wiki/Breadth-first_search</a></p>
+            <p><a href="http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm</a></p>
+            <p><a href="http://en.wikipedia.org/wiki/Flood_fill">http://en.wikipedia.org/wiki/Flood_fill</a></p>
+		</div>
+	</div>
+	
+	<div>
+		<div class="header">
+			<h2 id="author">Author</h2>
+		</div>
+		<div class="content">
+		
+			<h2 class="content-subhead">Personal</h2>
+			<table>
+			<tr>
+				<td>First Name: </td>
+				<td>Weiqing</td>
+			</tr>
+			<tr>
+				<td>Last Name: </td>
+				<td>Mao</td>
+			</tr>
+			</table>
+			
+			<h2 class="content-subhead">Contact</h2>
+			<table>
+			<tr>
+				<td>Mobile: </td>
+				<td><a href="tel:[+61432388818]">+61 4 3238 8818</a></td>
+			</tr>
+			<tr>
+				<td>Email: </td>
+				<td><a href="mailto:weiqingmao@robertnicholson.org">weiqingmao@robertnicholson.org</a></td>
+			</tr>
+			</table>
+
+			<h2 class="content-subhead">Social</h2>
+			<table>
+			<tr>
+				<td>Skype: </td>
+				<td>weiqing6</td>
+			</tr>
+			<tr>
+				<td>LinkedIn: </td>
+				<td><a href="http://au.linkedin.com/pub/weiqing-mao/14/225/203/">http://au.linkedin.com/pub/weiqing-mao/14/225/203/</a></td>
+			</tr>
+			<tr>
+				<td>Github: </td>
+				<td><a href="https://github.com/allen-ecu">https://github.com/allen-ecu</a></td>
+			</tr>
+			<tr>
+				<td>Stackoverflow: </td>
+				<td><a href="http://stackoverflow.com/users/2203058/allen-wayne">http://stackoverflow.com/users/2203058/allen-wayne</a></td>
+			</tr>
+
+			</table>
+			
+			<h2 class="content-subhead">About Me</h2>
+			<table>
+			<tr>
+				<td>AboutMe: </td>
+				<td><a href="http://robertnicholson.org/aboutme">click here</a></td>
+			</tr>
+			</table>
+
+			
+		</div>
+	</div>
+	</div>
+
+</div>
+
+<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="js/ui.js"></script>
+<script>
+//scrollTo("referees");
+var menus = ["puz", "sol", "con", "ref"];
+
+function scrollTo(hash) {
+    location.hash = "#" + hash;
+}
+function makeSelected(iD){
+	for(var i = 0; i < 4; i++)
+	{
+		if(iD == menus[i])
+		{
+			var d = document.getElementById(iD);
+			d.className = d.className + " pure-menu-selected";
+		}
+		else
+		{
+			var d = document.getElementById(menus[i]);
+			d.className = "menu-item-divided";
+		}
+	}
+}
+
+</script>
+</body>
+</html>
